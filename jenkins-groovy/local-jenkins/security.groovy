@@ -6,11 +6,14 @@ import jenkins.model.JenkinsLocationConfiguration
 import net.sf.json.JSONObject
 
 def instance = Jenkins.getInstance()
-String admin_email = 'hugo.victoor77@gmail.com'
+String admin_email = System.getenv('JENKINS_ADMIN_EMAIL') ?: 'admin@localhost'
+String admin_username = System.getenv('JENKINS_ADMIN_USER') ?: 'admin'
+String admin_password = System.getenv('JENKINS_ADMIN_PASSWORD') ?: 'admin'
+
 JenkinsLocationConfiguration location = instance.getExtensionList('jenkins.model.JenkinsLocationConfiguration')[0]
  
 def hudsonRealm = new HudsonPrivateSecurityRealm(false)
-hudsonRealm.createAccount("admin", "admin")
+hudsonRealm.createAccount(admin_username, admin_password)
 instance.setSecurityRealm(hudsonRealm)
  
 def strategy = new FullControlOnceLoggedInAuthorizationStrategy()

@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  jenkins:
+    build: ./local-jenkins
+    container_name: jenkins
+    ports:
+      - "80:8080"
+      - "50000:50000"
+    environment:
+      - JENKINS_ADMIN_USER=${JENKINS_ADMIN_USER:-admin}
+      - JENKINS_ADMIN_PASSWORD=${JENKINS_ADMIN_PASSWORD:-admin}
+      - JENKINS_ADMIN_EMAIL=${JENKINS_ADMIN_EMAIL:-admin@localhost}
+    volumes:
+      - jenkins_home:/var/jenkins_home
+    restart: unless-stopped
+
+volumes:
+  jenkins_home:
+    driver: local
